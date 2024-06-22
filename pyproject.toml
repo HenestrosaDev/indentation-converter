@@ -28,7 +28,7 @@ readme = "README.md"
 packages = [{ include = "indentation_converter", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.5"
 binaryornot = "^0.4.4"
 pathspec = "^0.12.1"
 
