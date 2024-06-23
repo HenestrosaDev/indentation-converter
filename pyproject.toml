@@ -32,13 +32,13 @@ python = "^3.9"
 binaryornot = "^0.4.4"
 pathspec = "^0.12.1"
 
-[tool.poetry.scripts]
-test = "scripts:test"
-
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
 codecov = "^2.1.13"
 pytest = "^8.2.2"
+
+[tool.poetry.scripts]
+indentation_converter = "src.indentation_converter.indentation_converter:main"
 
 
 [build-system]

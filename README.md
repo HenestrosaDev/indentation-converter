@@ -81,6 +81,7 @@
   - [Project Structure](#project-structure)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
+	- [Prerequisites](#prerequisites)
   - [Script Installation](#script-installation)
   - [Package Installation](#package-installation)
 - [Usage](#usage)
@@ -97,9 +98,9 @@
 
 ## About the Project
 
-This Python script provides a flexible tool for converting indentation styles in text files between spaces and tabs. It supports converting leading spaces to tabs, leading tabs to spaces, and even converting from one number of spaces to another, all while respecting the files detailed in the `.gitignore`, hidden files, and binary files.
+This Python script provides a flexible tool for converting indentation styles in text files between spaces and tabs. It supports converting leading spaces to tabs and leading tabs to spaces, all while ignoring the files detailed in the `.gitignore`, hidden files, and binary files.
 
-In addition to being able to run this script on its own, you can also installed it as a package via **PyPI** (more information on how to install it [here](#use-the-package-in-your-project)).
+In addition to being able to run this script on its own, you can also install it as a package via **PyPI** (more information on how to install it [here](#use-the-package-in-your-project)).
 
 <!-- PROJECT STRUCTURE -->
 
@@ -143,11 +144,28 @@ In addition to being able to run this script on its own, you can also installed 
 
 ## Getting Started
 
+### Prerequisites
+
+- Python 3.9 or higher (download it [here](https://www.python.org/downloads/))
+- Git (download it [here](https://git-scm.com/downloads))
+
 ### Script Installation
 
-1. Download the `.zip` file from the [latest release](https://github.com/HenestrosaDev/indentation-converter/releases/latest/download/indentation-converter.zip).
-2. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
-3. (Optional but recommended) Activate the virtual environment:
+1. Clone this repository:
+
+	```bash
+	git clone https://github.com/HenestrosaDev/indentation-converter.git
+	```
+
+2. Navigate to the project directory:
+
+	 ```bash
+	 cd indentation-converter
+	 ```
+
+3. Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
+
+4. Activate the virtual environment:
 
 	 ```bash
 	 # on Windows
@@ -160,7 +178,23 @@ In addition to being able to run this script on its own, you can also installed 
 	 source venv/Scripts/activate
 	 ```
 
-4. Open the command line and run `pip install -r path/to/requirements.txt` to install the required packages to run the script.
+5. Install `poetry`:
+
+	 ```bash
+	 pip install poetry
+	 ```
+
+6. Use `poetry` to install the project dependencies:
+
+	 ```bash
+	 poetry install
+	 ```
+
+7. Run the script using `poetry` (see the [Usage](#usage) section for more information):
+
+	 ```bash
+	 poetry run indentation_converter <path> -m <mode> -s <spaces-per-tab>
+	 ```
 
 ### Package Installation
 
@@ -226,7 +260,7 @@ python path/to/indentation_converter.py [FILE_PATH] -m tabs_to_spaces -s 2
 
 ### Using the Package in Your Project
 
-After following the steps in the [Getting Started](#getting-started) section, import the package and the wrapper function(s) you want to use:
+After following the steps in the [Package Installation](#package-installation) section, import the package and use the functions you want:
 
 ```python
 # Using the `process_file` and `convert_leading_spaces_to_tabs` functions
