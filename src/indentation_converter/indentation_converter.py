@@ -1,6 +1,8 @@
 import argparse
 import os
 import sys
+from collections.abc import Callable
+from typing import List
 
 import binaryornot.check as bincheck
 import pathspec
@@ -39,14 +41,16 @@ def convert_leading_tabs_to_spaces(line: str, spaces_per_tab: int) -> str:
     return spaces + line.lstrip("\t")
 
 
-def process_file(file_path: str, conversion_function: callable, spaces_per_tab: int):
+def process_file(
+    file_path: str, conversion_function: Callable[[str, int], str], spaces_per_tab: int
+):
     """
     Process a single file to convert its leading spaces or tabs.
 
     :param file_path: The path of the file to process.
     :type file_path: str
     :param conversion_function: The function to use for conversion.
-    :type conversion_function: callable
+    :type conversion_function: Callable[[str, int], str]
     :param spaces_per_tab: The number of spaces per tab.
     :type spaces_per_tab: int
     """
@@ -61,14 +65,14 @@ def process_file(file_path: str, conversion_function: callable, spaces_per_tab: 
             file.write(conversion_function(line, spaces_per_tab))
 
 
-def get_ignored_files(directory_path: str) -> list:
+def get_ignored_files(directory_path: str) -> List:
     """
     Get a list of files to ignore based on .gitignore patterns.
 
     :param directory_path: The directory to search for .gitignore.
     :type directory_path: str
     :return: A list of files to ignore.
-    :rtype: list
+    :rtype: List
     """
     gitignore_path = os.path.join(directory_path, ".gitignore")
     if not os.path.exists(gitignore_path):
@@ -136,7 +140,9 @@ def is_binary(file_path: str) -> bool:
 
 
 def process_directory(
-    directory_path: str, conversion_function: callable, spaces_per_tab: int
+    directory_path: str,
+    conversion_function: Callable[[str, int], str],
+    spaces_per_tab: int,
 ):
     """
     Process all files in a directory to convert leading spaces or tabs.
@@ -144,7 +150,7 @@ def process_directory(
     :param directory_path: The directory to process.
     :type directory_path: str
     :param conversion_function: The function to use for conversion.
-    :type conversion_function: callable
+    :type conversion_function: Callable[[str, int], str]
     :param spaces_per_tab: The number of spaces per tab.
     :type spaces_per_tab: int
     """

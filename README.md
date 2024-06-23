@@ -117,23 +117,19 @@ In addition to being able to run this script on its own, you can also installed 
 │   pyproject.toml
 │   README.md
 │   requirements.txt
+│   scripts.py
 │
 ├───.github
-│   │   bug_report_template.md
-│   │   feature_request_template.md
-│   │
-│   └───PULL_REQUEST_TEMPLATE
-│           pull_request_template.md
+│   └───workflows
+│           build.yaml
+│           publish.yaml
 │
-├───docs
-│       icon.png
-│
-├───indentation_converter
-│       __init__.py
-│       indentation_converter.py
+├───src
+│   └───indentation_converter
+│           __init__.py
+│           indentation_converter.py
 │
 └───tests
-        __init__.py
         test_indentation_converter.py
 ```
 
