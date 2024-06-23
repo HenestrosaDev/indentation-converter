@@ -4,7 +4,7 @@
 <div align="center">
 	<h1>Indentation Converter</h1>
 	<p>
-		Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in `.gitiginore`.
+		Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in <code>.gitiginore</code>.
 	</p>
 	<p>
 		<a href="https://pypi.org/project/indentation-converter/">
@@ -117,7 +117,6 @@ In addition to being able to run this script on its own, you can also installed 
 │   pyproject.toml
 │   README.md
 │   requirements.txt
-│   scripts.py
 │
 ├───.github
 │   └───workflows
