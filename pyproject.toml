@@ -38,6 +38,7 @@ test = "scripts:test"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
 codecov = "^2.1.13"
+pytest = "^8.2.2"
 
 
 [build-system]
