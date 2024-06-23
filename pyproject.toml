@@ -37,6 +37,9 @@ pre-commit = "^3.7.1"
 codecov = "^2.1.13"
 pytest = "^8.2.2"
 
+[tool.poetry.scripts]
+indentation_converter = "src.indentation_converter.indentation_converter:main"
+
 
 [build-system]
 requires = ["poetry-core"]
