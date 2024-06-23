@@ -39,11 +39,11 @@ jobs:
           python -m pip install -e .
 
       - name: Run tests
-        run: poetry run python -m unittest discover tests
+        run: poetry run pytest
 
       - name: Coverage run
         run: |
-          poetry run coverage run -m unittest discover tests
+          poetry run coverage run -m pytest
           poetry run coverage report -m --fail-under 80
           poetry run coverage xml
 
