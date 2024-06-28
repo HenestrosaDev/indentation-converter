@@ -252,7 +252,7 @@ python path/to/indentation_converter.py [FILE_PATH] -m tabs_to_spaces -s 2
 
 #### Script Flags
 
-| Flag                       | Description                                                                                                                                                                             |
+| FLAG                       | DESCRIPTION                                                                                                                                                                             |
 |:---------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `-h` or `--help`           | Displays help text for the program.                                                                                                                                                     |
 | `-m` or `--mode`           | Conversion mode. The possible inputs are `spaces-to-tabs`, `st`, `tabs-to-spaces`, and `ts`. `st` is the short form of `spaces_to_tabs` and `ts` is the short form of `tabs_to_spaces`. |
