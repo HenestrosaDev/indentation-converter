@@ -7,7 +7,7 @@ name = "indentation-converter"
 version = "0.2.0"
 description = "Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in .gitiginore."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {text = "MIT"}
 keywords = ["indentation", "tabs", "spaces", "converter"]
 

@@ -149,7 +149,7 @@ In addition to being able to run this script on its own, you can also install it
 
 ### Prerequisites
 
-- Python 3.8 or higher (download it [here](https://www.python.org/downloads/))
+- Python 3.9 or higher (download it [here](https://www.python.org/downloads/))
 - Git (download it [here](https://git-scm.com/downloads))
 
 ### Script Installation
