@@ -1,9 +1,20 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "indentation-converter"
-version = "0.1.0"
-description = "Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in `.gitiginore`."
-authors = ["HenestrosaDev <henestrosadev@gmail.com>"]
-license = "MIT"
+version = "0.2.0"
+description = "Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in .gitiginore."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+keywords = ["indentation", "tabs", "spaces", "converter"]
+
+authors = [
+    {name = "HenestrosaDev", email = "henestrosadev@gmail.com"}
+]
+
 classifiers = [
     "Intended Audience :: Developers",
     "Environment :: Console",
@@ -15,32 +26,20 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: Other OS",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: MIT License"
 ]
-keywords = [
-    "indentation",
-    "tabs",
-    "spaces",
-    "converter",
+
+dependencies = [
+    "binaryornot==0.4.4",
+    "pathspec==0.12.1"
 ]
-repository = "https://github.com/HenestrosaDev/indentation-converter"
-readme = "README.md"
-packages = [{ include = "indentation_converter", from = "src" }]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-binaryornot = "^0.4.4"
-pathspec = "^0.12.1"
+[project.urls]
+Homepage = "https://github.com/HenestrosaDev/indentation-converter"
 
-[tool.poetry.group.dev.dependencies]
-pre-commit = "^3.7.1"
-codecov = "^2.1.13"
-pytest = "^8.2.2"
+[project.scripts]
+# Corregido: Ahora apunta a la función 'main' dentro de '__main__.py'
+indentation_converter = "indentation_converter.__main__:main"
 
-[tool.poetry.scripts]
-indentation_converter = "src.indentation_converter.indentation_converter:main"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools.packages.find]
+where = ["src"]

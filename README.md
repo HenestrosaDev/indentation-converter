@@ -4,7 +4,7 @@
 <div align="center">
 	<h1>Indentation Converter</h1>
 	<p>
-		Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in <code>.gitiginore</code>.
+		Convert indentation between spaces and tabs in text files and directories, ignoring hidden files, binary files, and files in <code>.gitignore</code>.
 	</p>
 	<p>
 		<a href="https://pypi.org/project/indentation-converter/">
@@ -78,21 +78,23 @@
 ## Table of Contents
 
 - [About the Project](#about-the-project)
-  - [Project Structure](#project-structure)
-  - [Built With](#built-with)
+	- [Project Structure](#project-structure)
+	- [Built With](#built-with)
 - [Getting Started](#getting-started)
 	- [Prerequisites](#prerequisites)
-  - [Script Installation](#script-installation)
-  - [Package Installation](#package-installation)
+	- [Script Installation](#script-installation)
+	- [Package Installation](#package-installation)
 - [Usage](#usage)
-  - [Running the Program](#running-the-program)
-    - [Script Flags](#script-flags)
-  - [Using the Package in Your Project](#using-the-package-in-your-project)
+	- [Basic Syntax](#basic-syntax)
+	- [Options](#options)
+	- [Examples](#examples)
+	- [Using the Package in Your Project](#using-the-package-in-your-project)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 - [Authors](#authors)
 - [Support](#support)
+
 
 <!-- ABOUT THE PROJECT -->
 
@@ -114,9 +116,9 @@ In addition to being able to run this script on its own, you can also install it
 │   .gitignore
 │   .pre-commit-config.yaml
 │   LICENSE
-│   poetry.lock
 │   pyproject.toml
 │   README.md
+│   requirements-dev.txt
 │   requirements.txt
 │
 ├───.github
@@ -127,7 +129,8 @@ In addition to being able to run this script on its own, you can also install it
 ├───src
 │   └───indentation_converter
 │           __init__.py
-│           indentation_converter.py
+│           __main__.py
+│           core.py
 │
 └───tests
         test_indentation_converter.py
@@ -146,16 +149,16 @@ In addition to being able to run this script on its own, you can also install it
 
 ### Prerequisites
 
-- Python 3.9 or higher (download it [here](https://www.python.org/downloads/))
+- Python 3.8 or higher (download it [here](https://www.python.org/downloads/))
 - Git (download it [here](https://git-scm.com/downloads))
 
 ### Script Installation
 
 1. Clone this repository:
 
-	```bash
-	git clone https://github.com/HenestrosaDev/indentation-converter.git
-	```
+	 ```bash
+	 git clone https://github.com/HenestrosaDev/indentation-converter.git
+	 ```
 
 2. Navigate to the project directory:
 
@@ -163,42 +166,54 @@ In addition to being able to run this script on its own, you can also install it
 	 cd indentation-converter
 	 ```
 
-3. Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
-
-4. Activate the virtual environment:
+3. Create and activate a virtual environment:
 
 	 ```bash
+	 python -m venv venv
+
+	 # on macOS / Linux
+	 source venv/bin/activate
+
 	 # on Windows
-	 . venv/Scripts/activate
-	 # if you get the error `FullyQualifiedErrorId : UnauthorizedAccess`, run this:
 	 Set-ExecutionPolicy Unrestricted -Scope Process
-	 # and then . venv/Scripts/activate
-
-	 # on macOS and Linux
-	 source venv/Scripts/activate
+	 . venv/Scripts/activate
 	 ```
 
-5. Install `poetry`:
+4. Install dependencies:
 
 	 ```bash
-	 pip install poetry
+	 pip install -r requirements.txt
+
+	 # (optional) install development tools if you are going to work on the code
+	 pip install -r requirements-dev.txt
 	 ```
 
-6. Use `poetry` to install the project dependencies:
+4. Install the package locally so the `indentation_converter` CLI is available:
 
 	 ```bash
-	 poetry install
+	 pip install .
 	 ```
 
-7. Run the script using `poetry` (see the [Usage](#usage) section for more information):
+5. Run the program:
 
 	 ```bash
-	 poetry run indentation_converter <path> -m <mode> -s <spaces-per-tab>
+	 indentation_converter [PATH] -m [MODE] -s [SPACES_PER_TAB]
 	 ```
 
 ### Package Installation
 
-Install the PyPI package by running `pip install indentation-converter`.
+Install the PyPI package by running:
+
+```bash
+pip install indentation-converter
+```
+
+To install from source for development:
+
+```bash
+pip install -e .
+pip install -r dev-requirements.txt
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -206,57 +221,43 @@ Install the PyPI package by running `pip install indentation-converter`.
 
 ## Usage
 
-### Running the Program
+### Basic Syntax
 
-**NOTE**: The commands in each usage example do the same thing. The only thing that changes is the value passed to the conversion mode (`-m`).
-
----
-
-To convert the indentation of a file from 2 spaces to tabs:
-
+```bash
+indentation_converter [PATH] -m [MODE] [OPTIONS]
 ```
-python path/to/indentation_converter.py [FILE_PATH] -m st -s 2
-python path/to/indentation_converter.py [FILE_PATH] -m spaces_to_tabs -s 2
-```
+>[!NOTE]
+>If you haven't installed the tool globally, you can execute it via Python: `python path/to/__main__.py [PATH] ...`
 
----
+### Options
 
-To convert the indentation of a file from 4 spaces to tabs:
+* `-m` (or `--mode`): Conversion mode. Use `st` or `spaces_to_tabs` to convert to tabs, and `ts` or `tabs_to_spaces` to convert to spaces.
+* `-s` (or `--spaces`): Number of spaces per indentation level. **(Default: 4)**
+* `-r` (or `--remove-whitespace-only-lines`): Removes trailing spaces/tabs on blank lines, leaving them completely empty.
 
-```
-python path/to/indentation_converter.py [FILE_PATH] -m st
-python path/to/indentation_converter.py [FILE_PATH] -m spaces_to_tabs 
-```
+### Examples
 
-The value of the `-s` flag defaults to 4, so it's not necessary to specify it in this case.
-
----
-
-To convert the indentation of the files of a directory from 4 spaces to tabs:
-
-```
-python path/to/indentation_converter.py [DIRECTORY_PATH] -m st
-python path/to/indentation_converter.py [DIRECTORY_PATH] -m spaces_to_tabs
+**Convert 4 spaces to tabs (Default)**
+Because `-s` defaults to 4, you don't need to specify the space count. This works for both individual files and entire directories:
+```bash
+indentation_converter [PATH] -m st
 ```
 
----
-
-To convert the indentation of a file from tabs to 2 spaces:
-
-```
-python path/to/indentation_converter.py [FILE_PATH] -m ts -s 2
-python path/to/indentation_converter.py [FILE_PATH] -m tabs_to_spaces -s 2
+**Convert 2 spaces to tabs**
+```bash
+indentation_converter [PATH] -m st -s 2
 ```
 
----
+**Convert tabs to 2 spaces**
+```bash
+indentation_converter [PATH] -m ts -s 2
+```
 
-#### Script Flags
-
-| FLAG                       | DESCRIPTION                                                                                                                                                                             |
-|:---------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `-h` or `--help`           | Displays help text for the program.                                                                                                                                                     |
-| `-m` or `--mode`           | Conversion mode. The possible inputs are `spaces-to-tabs`, `st`, `tabs-to-spaces`, and `ts`. `st` is the short form of `spaces_to_tabs` and `ts` is the short form of `tabs_to_spaces`. |
-| `-s` or `--spaces-per-tab` | Number of spaces per tab. The default value is `4`.                                                                                                                                     |
+**Convert and clean up empty lines**
+Use the `-r` flag to simultaneously strip rogue spaces or tabs from otherwise blank lines:
+```bash
+indentation_converter [PATH] -r
+```
 
 ### Using the Package in Your Project
 
