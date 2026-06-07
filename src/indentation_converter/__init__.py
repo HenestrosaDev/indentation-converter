@@ -4,6 +4,7 @@
 from .core import (
 	convert_leading_spaces_to_tabs,
 	convert_leading_tabs_to_spaces,
+	process_lines,
 	process_directory,
 	process_file,
 )
@@ -11,6 +12,7 @@ from .core import (
 __all__ = [
 	"convert_leading_spaces_to_tabs",
 	"convert_leading_tabs_to_spaces",
+	"process_lines",
 	"process_file",
 	"process_directory",
 ]

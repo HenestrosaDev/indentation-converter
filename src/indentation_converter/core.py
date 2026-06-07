@@ -8,6 +8,7 @@ import pathspec
 __all__ = [
 	"convert_leading_spaces_to_tabs",
 	"convert_leading_tabs_to_spaces",
+	"process_lines",
 	"process_file",
 	"process_directory",
 ]
@@ -28,6 +29,27 @@ def convert_leading_tabs_to_spaces(line: str, spaces_per_tab: int) -> str:
 	return spaces + line.lstrip("\t")
 
 
+def process_lines(
+	lines: List[str],
+	conversion_function: Callable[[str, int], str],
+	spaces_per_tab: int,
+	remove_whitespace_only_lines: bool = False,
+) -> List[str]:
+	"""Process a list of strings, applying indentation conversion and optional whitespace stripping."""
+	processed_lines: List[str] = []
+	for line in lines:
+		if remove_whitespace_only_lines and line.strip(" \t\r\n") == "":
+			if line.endswith("\r\n"):
+				processed_lines.append("\r\n")
+			elif line.endswith("\n"):
+				processed_lines.append("\n")
+			continue
+
+		processed_lines.append(conversion_function(line, spaces_per_tab))
+
+	return processed_lines
+
+
 def process_file(
 	file_path: str,
 	conversion_function: Callable[[str, int], str],
@@ -41,16 +63,12 @@ def process_file(
 	with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
 		lines = file.readlines()
 
-	with open(file_path, "w", encoding="utf-8", errors="ignore") as file:
-		for line in lines:
-			if remove_whitespace_only_lines and line.strip(" \t\r\n") == "":
-				if line.endswith("\r\n"):
-					file.write("\r\n")
-				elif line.endswith("\n"):
-					file.write("\n")
-				continue
+	processed_lines = process_lines(
+		lines, conversion_function, spaces_per_tab, remove_whitespace_only_lines
+	)
 
-			file.write(conversion_function(line, spaces_per_tab))
+	with open(file_path, "w", encoding="utf-8", errors="ignore") as file:
+		file.writelines(processed_lines)
 
 
 def process_directory(
@@ -60,20 +78,15 @@ def process_directory(
 	remove_whitespace_only_lines: bool = False,
 ) -> None:
 	"""Process all files in a directory to convert leading spaces or tabs."""
-	ignored_files = _get_ignored_files(directory_path)
-	for root, dirs, files in os.walk(directory_path):
-		files[:] = [f for f in files if not is_hidden(os.path.join(root, f))]
-		dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
+	target_files = _get_target_files(directory_path)
 
-		for file_name in files:
-			file_path = os.path.join(root, file_name)
-			if file_path not in ignored_files:
-				process_file(
-					file_path,
-					conversion_function,
-					spaces_per_tab,
-					remove_whitespace_only_lines,
-				)
+	for file_path in target_files:
+		process_file(
+			file_path,
+			conversion_function,
+			spaces_per_tab,
+			remove_whitespace_only_lines,
+		)
 
 
 def is_hidden(filepath: str) -> bool:
@@ -89,6 +102,23 @@ def is_hidden(filepath: str) -> bool:
 # ---------------------------------------------------------
 # Private helper functions
 # ---------------------------------------------------------
+
+def _get_target_files(directory_path: str) -> List[str]:
+	"""Discover all files in a directory that should be processed, respecting hidden and gitignore rules."""
+	ignored_files = _get_ignored_files(directory_path)
+	target_files: List[str] = []
+
+	for root, dirs, files in os.walk(directory_path):
+		files[:] = [f for f in files if not is_hidden(os.path.join(root, f))]
+		dirs[:] = [d for d in dirs if not is_hidden(os.path.join(root, d))]
+
+		for file_name in files:
+			file_path = os.path.join(root, file_name)
+			if file_path not in ignored_files:
+				target_files.append(file_path)
+
+	return target_files
+
 
 def _get_ignored_files(directory_path: str) -> List[str]:
 	"""Get a list of files to ignore based on .gitignore patterns."""
@@ -108,7 +138,7 @@ def _get_ignored_files(directory_path: str) -> List[str]:
 		for name in dirs:
 			all_files.append(os.path.relpath(os.path.join(root, name), directory_path))
 
-	ignored_files = spec.match_files(all_files)
+	ignored_files: List[str] = spec.match_files(all_files)
 	return [os.path.join(directory_path, path) for path in ignored_files]
 
 
